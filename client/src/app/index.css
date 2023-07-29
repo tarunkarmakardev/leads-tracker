@@ -1,0 +1,8 @@
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+*:focus-visible {
+  outline: unset;
+}
