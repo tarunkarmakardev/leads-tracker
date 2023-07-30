@@ -1,0 +1,20 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./backend/.env.local
+  client:
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./client/.env.local
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "80:80"
