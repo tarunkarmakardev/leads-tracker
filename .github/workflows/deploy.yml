@@ -1,0 +1,41 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  aws-deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app-name: ["leads-tracker"]
+        deploy-group: ["personal-ec2-deployment-group"]
+        s3-bucket: ["tarun-personal-ec2-deployments"]
+        s3-filename: ["leads-tracker-aws-codedeploy-${{ github.sha }}"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
+          aws-region: ap-south-1
+
+      - name: Push to s3
+        run: |
+          aws deploy push \
+          --application-name ${{ matrix.app-name }} \
+          --description "This is a revision for the ${{ matrix.app-name }}-${{ github.sha }}" \
+          --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
+          --source .
+
+      - name: AWS Create Deployment using Codedeploy
+        run: |
+          aws deploy create-deployment \
+           --application-name ${{ matrix.app-name }} \
+           --deployment-config-name CodeDeployDefault.OneAtATime \
+           --deployment-group-name ${{ matrix.deploy-group }} \
+           --file-exists-behavior OVERWRITE \
+           --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \
