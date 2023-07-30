@@ -4,13 +4,13 @@ services:
       context: ./backend
       dockerfile: ./Dockerfile
     env_file:
-      - ./backend/.env.local
+      - ./backend/.env
   client:
     build:
       context: ./client
       dockerfile: ./Dockerfile
     env_file:
-      - ./client/.env.local
+      - ./client/.env
   nginx:
     build:
       context: ./nginx
