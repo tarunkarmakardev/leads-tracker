@@ -1,4 +1,4 @@
 #!/bin/bash
-echo "Strting Docker Compose"
+echo "Starting Docker Compose"
 cd /app
 sudo docker-compose up
