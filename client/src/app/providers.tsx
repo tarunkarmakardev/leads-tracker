@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import { store } from "@/redux/store";
@@ -13,6 +14,7 @@ export default function Providers({ children }: React.PropsWithChildren<{}>) {
     <ReduxProvider store={store}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <CssBaseline />
+        {/* @ts-ignore */}
         <SnackbarProvider maxSnack={3}>
           <QueryProvider>{children}</QueryProvider>
         </SnackbarProvider>
