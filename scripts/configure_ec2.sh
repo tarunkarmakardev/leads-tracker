@@ -11,3 +11,9 @@ wget https://aws-codedeploy-ap-south-1.s3.ap-south-1.amazonaws.com/latest/instal
 chmod +x ./install
 sudo ./install auto
 sudo service codedeploy-agent start
+
+echo "Adding Swap file"
+sudo fallocate -l 5G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
