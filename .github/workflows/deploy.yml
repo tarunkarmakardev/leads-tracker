@@ -10,7 +10,7 @@ jobs:
       matrix:
         app-name: ["leads-tracker"]
         deploy-group: ["personal-ec2-deployment-group"]
-        s3-bucket: ["personal-ec2-deployments"]
+        s3-bucket: ["personal-ec2-deployment-s3"]
         s3-filename: ["leads-tracker-aws-codedeploy-${{ github.sha }}"]
     steps:
       - name: Checkout
