@@ -12,6 +12,7 @@ jobs:
         deploy-group: ["personal-ec2-deployment-group"]
         s3-bucket: ["personal-ec2-deployment-s3"]
         s3-filename: ["leads-tracker-aws-codedeploy-${{ github.sha }}"]
+        region: ["ap-south-1"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -21,7 +22,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
-          aws-region: ap-south-1
+          aws-region: ${{ matrix.region }}
 
       - name: Push to s3
         run: |
