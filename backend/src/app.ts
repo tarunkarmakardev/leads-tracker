@@ -14,7 +14,7 @@ const app: Application = express();
 const PORT: number = env.PORT;
 app.use(
   cors({
-    origin: [env.FRONTEND_DOMAIN],
+    origin: [env.FRONTEND_DOMAIN, "http://localhost", "https://localhost"],
   })
 );
 app.use(express.json());
