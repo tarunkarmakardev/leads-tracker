@@ -1,0 +1,8 @@
+{
+  "filePaths": {
+    "base": "./output",
+    "nginxConf": "./nginx.conf",
+    "ec2Script": "./ec2_init_script.sh",
+    "sslScript": "./ssl_init_script.sh"
+  }
+}
