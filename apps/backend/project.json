@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env NODE_ENV=development nodemon --config apps/backend/nodemon.json"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register apps/backend/src/app.ts"
+      }
+    },
+    "ts-lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit --project apps/backend/tsconfig.json"
+      }
+    }
+  }
+}
