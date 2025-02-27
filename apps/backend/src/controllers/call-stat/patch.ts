@@ -1,4 +1,4 @@
-import { createMethodHandler } from "@/lib/controllerUtil";
+import { createController } from "@/lib/controller";
 import { CallStat, CallStatObject } from "@/models/call-stat";
 import { dot } from "dot-object";
 
@@ -14,8 +14,8 @@ type CallStatPatchBody = Omit<CallStatObject, "userId">;
 
 export type CallStatPatchRes = CallStatObject;
 
-export default createMethodHandler<CallStatPatchParams, CallStatPatchBody>({
-  async handleRequest(req, res) {
+export default createController<CallStatPatchParams, CallStatPatchBody>({
+  async handler(req, res) {
     const callStat = await CallStat.findByIdAndUpdate(
       req.params._id,
       dot(req.body),

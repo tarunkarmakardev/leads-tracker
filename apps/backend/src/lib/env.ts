@@ -1,17 +1,19 @@
 import { config } from "dotenv";
 import path from "path";
+import { z } from "zod";
 
-interface ENV {
-  PORT: number;
-  DATABASE_URI: string;
-  FRONTEND_DOMAIN: string;
-  SECRET_KEY: string;
-  GMAIL_APP_USER: string;
-  GMAIL_APP_KEY: string;
-  GOOGLE_CLIENT_ID: string;
-  GOOGLE_CLIENT_SECRET: string;
-}
-const requiredEnvKeys = Object.keys({} as ENV);
+const EnvSchema = z.object({
+  PORT: z.string().transform((val) => parseInt(val)),
+  SECRET_KEY: z.string(),
+  DATABASE_URL: z.string(),
+  FRONTEND_DOMAIN: z.string(),
+  // GMAIL_APP_USER: z.string(),
+  // GMAIL_APP_KEY: z.string(),
+  // GOOGLE_CLIENT_ID: z.string(),
+  // GOOGLE_CLIENT_SECRET: z.string(),
+});
+
+type ENV = z.infer<typeof EnvSchema>;
 
 export function isDev() {
   return process.env.NODE_ENV === "development";
@@ -24,7 +26,7 @@ export function isProd() {
 export function setupEnv() {
   if (isDev()) {
     config({
-      path: path.resolve(process.cwd(), ".env.local"),
+      path: path.resolve(process.cwd(), ".env"),
     });
   }
   if (isProd()) {
@@ -37,9 +39,7 @@ export function setupEnv() {
 export function getEnv() {
   setupEnv();
   const env = process.env as unknown as ENV;
-  const envKeysList = Object.keys(env);
-  const isValid = requiredEnvKeys.every((k) => envKeysList.includes(k));
-
+  const isValid = EnvSchema.parse(env);
   if (!isValid) {
     throw new Error("Invalid Env variables passed");
   }

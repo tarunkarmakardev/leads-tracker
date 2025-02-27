@@ -1,4 +1,4 @@
-import { createMethodHandler } from "@/lib/controllerUtil";
+import { createController } from "@/lib/controller";
 import { CallStat, CallStatResponseObject } from "@/models/call-stat";
 
 export type CallStatGetQuery = {
@@ -10,8 +10,8 @@ export type CallStatGetRes = {
   results: CallStatResponseObject[];
 };
 
-export default createMethodHandler<object, object, CallStatGetQuery>({
-  async handleRequest(req, res) {
+export default createController<object, object, CallStatGetQuery>({
+  async handler(req, res) {
     const { limit, skip } = req.query;
     const callStats = await CallStat.find(
       { userId: req.user._id },

@@ -3,14 +3,14 @@ import {
   CallStatObject,
   CallStatResponseObject,
 } from "@/models/call-stat";
-import { createMethodHandler } from "@/lib/controllerUtil";
+import { createController } from "@/lib/controller";
 
 export type CallStatPostBody = CallStatObject;
 
 export type CallStatPOSTRes = CallStatResponseObject;
 
-export default createMethodHandler<object, CallStatPostBody>({
-  async handleRequest(req, res) {
+export default createController<object, CallStatPostBody>({
+  async handler(req, res) {
     const payload = {
       ...req.body,
       userId: req.user._id,

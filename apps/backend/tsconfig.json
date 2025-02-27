@@ -10,7 +10,8 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@/*": ["apps/backend/src/*"]
+      "@/*": ["apps/backend/src/*"],
+      "@leads-tracker/schemas": ["libs/schemas/src/index.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

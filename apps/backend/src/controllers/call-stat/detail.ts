@@ -1,4 +1,4 @@
-import { createMethodHandler } from "@/lib/controllerUtil";
+import { createController } from "@/lib/controller";
 import { CallStat, CallStatResponseObject } from "@/models/call-stat";
 
 const errors = {
@@ -9,10 +9,10 @@ export type CallStatDetailParams = {
   _id: string;
 };
 
-export type CallStatDETAILRes = CallStatResponseObject
+export type CallStatDETAILRes = CallStatResponseObject;
 
-export default createMethodHandler<CallStatDetailParams>({
-  async handleRequest(req, res) {
+export default createController<CallStatDetailParams>({
+  async handler(req, res) {
     const callStat = await CallStat.findById(req.params._id);
     if (!callStat) throw errors.NOT_FOUND;
     const resData: CallStatDETAILRes = callStat;

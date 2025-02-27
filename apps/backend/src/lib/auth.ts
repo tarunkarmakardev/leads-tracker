@@ -1,19 +1,27 @@
-import { UserResponseObject } from "@/models/user";
 import jwt from "jsonwebtoken";
 import { getEnv } from "./env";
+import { User } from "@leads-tracker/schemas";
+import { Request } from "express";
+
+export type ProtectedRequest = Request & {
+  user: User;
+};
 
 const { SECRET_KEY } = getEnv();
 
-type JWTPayload = Pick<UserResponseObject, "_id">;
+type JWTPayload = { id: string };
 
 export function getTokenFromAuthHeader(header?: string | null) {
   return header?.replace("Bearer ", "");
 }
 
 export function generateJWT(payload: JWTPayload) {
-  return jwt.sign(payload, SECRET_KEY, {
-    expiresIn: "30 days",
+  const expiresIn = Date.now() + 1000 * 60 * 60 * 24 * 7;
+  const token = jwt.sign(payload, SECRET_KEY, {
+    algorithm: "HS256",
+    expiresIn,
   });
+  return { token, expiresIn };
 }
 
 export function decodeAndVerifyJWT(token = "") {

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { createMethodHandler } from "@/lib/controllerUtil";
+import { createController } from "@/lib/controller";
 import { CallStat } from "@/models/call-stat";
 import { getChartFromObject } from "./config";
 
@@ -19,12 +19,12 @@ export type NonProductionChartResponse = {
   results: NonProductionChartObj[];
 };
 
-export const GET = createMethodHandler<
+export const GET = createController<
   NonProductionChartReqParams,
   object,
   NonProductionChartReqQuery
 >({
-  async handleRequest(req, res) {
+  async handler(req, res) {
     const { user, query } = req;
     const fromObj = getChartFromObject(query.from);
     const callStats = await CallStat.find({
