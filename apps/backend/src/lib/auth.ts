@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
 import { getEnv } from "./env";
-import { User } from "@leads-tracker/schemas";
 import { Request } from "express";
 
 export type ProtectedRequest = Request & {
-  user: User;
+  user: { id: string };
 };
 
 const { SECRET_KEY } = getEnv();

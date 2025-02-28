@@ -2,6 +2,10 @@
 import { Request, Response } from "express";
 import { ZodError } from "zod";
 import { ProtectedRequest } from "./auth";
+import {
+  RestControllerBaseSchema,
+  RestControllerPaginationSchema,
+} from "@leads-tracker/schemas";
 
 type R = Record<string, any>;
 
@@ -34,9 +38,9 @@ export function createController<
       await handler(_req as ControllerRequest<P, B, Q>, res);
     } catch (error) {
       if (error instanceof ZodError) {
-        res
-          .status(400)
-          .send({ message: error.errors.map((e) => e.message).join(", ") });
+        res.status(400).send({
+          message: error.errors.map((e) => `${e.path} ${e.message}`).join(", "),
+        });
       } else if (error instanceof ControllerError) {
         res.status(error.statusCode).send({ message: error.message });
       } else if (error instanceof Error) {
@@ -53,4 +57,146 @@ export class ControllerError extends Error {
     super(message);
     this.name = "ControllerError";
   }
+}
+
+type CreateRestControllersOptions<
+  GetData,
+  DetailData,
+  PostPayload,
+  PostData,
+  PatchPayload,
+  PatchData,
+  DeleteData
+> = {
+  get: {
+    searchFields: string[];
+    query: (payload: {
+      where: any;
+      orderBy: any;
+      take: number;
+      skip: number;
+    }) => Promise<GetData>;
+  };
+  detail: {
+    query: (payload: { where: { id: string } }) => Promise<DetailData>;
+  };
+  post: {
+    parsePayload: (rawPayload: any) => PostPayload;
+    mutation: (payload: {
+      data: PostPayload & { userId: string };
+    }) => Promise<PostData>;
+  };
+  patch: {
+    parsePayload: (rawPayload: any) => PatchPayload;
+    mutation: (payload: {
+      where: { id: string };
+      data: PatchPayload;
+    }) => Promise<PatchData>;
+  };
+  delete: {
+    mutation: (payload: { where: { id: string } }) => Promise<DeleteData>;
+  };
+};
+
+export function createRestControllers<
+  GetData,
+  DetailData,
+  PostPayload,
+  PostData,
+  PatchPayload,
+  PatchData,
+  DeleteData
+>({
+  get,
+  detail,
+  post,
+  patch,
+  delete: deleteProp,
+}: CreateRestControllersOptions<
+  GetData,
+  DetailData,
+  PostPayload,
+  PostData,
+  PatchPayload,
+  PatchData,
+  DeleteData
+>) {
+  const GET = createController({
+    handler: async (req, res) => {
+      const searchFields = get.searchFields;
+      const { q, limit, offset, sortBy, sortOrder } =
+        RestControllerPaginationSchema.parse(req.query);
+      let where: any;
+      let orderBy: any;
+      if (q) {
+        where = {};
+        where.OR = searchFields.map((field) => ({
+          [field]: {
+            contains: q,
+          },
+        }));
+      }
+      if (sortBy && sortOrder) {
+        orderBy = {};
+        orderBy[sortBy] = sortOrder;
+      }
+      const results = await get.query({
+        where,
+        orderBy,
+        take: limit,
+        skip: offset,
+      });
+      return res.json({ results });
+    },
+  });
+  const DETAIL = createController({
+    handler: async (req, res) => {
+      const { id } = RestControllerBaseSchema.parse(req.params);
+      const result = await detail.query({
+        where: {
+          id,
+        },
+      });
+      return res.json(result);
+    },
+  });
+  const POST = createController({
+    handler: async (req, res) => {
+      const data = post.parsePayload({ ...req.body, ...req.params });
+      const result = await post.mutation({
+        data: {
+          ...data,
+          userId: req.user.id,
+        },
+      });
+      return res.json(result);
+    },
+  });
+  const DELETE = createController({
+    handler: async (req, res) => {
+      const { id } = RestControllerBaseSchema.parse(req.params);
+      const result = await deleteProp.mutation({
+        where: {
+          id,
+        },
+      });
+      return res.json(result);
+    },
+  });
+  const PATCH = createController({
+    handler: async (req, res) => {
+      const { id, ...data } = patch.parsePayload({
+        ...req.body,
+        ...req.params,
+      }) as any;
+      const result = await patch.mutation({
+        where: {
+          id,
+        },
+        data,
+      });
+      return res.json(result);
+    },
+  });
+  return { GET, DETAIL, POST, DELETE, PATCH };
 }

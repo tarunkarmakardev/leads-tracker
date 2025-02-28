@@ -1,5 +1,5 @@
 {
-  "watch": ["apps/backend/src"],
+  "watch": ["apps/backend/src", "libs/schemas"],
   "ext": "ts",
   "exec": "ts-node --project apps/backend/tsconfig.json -r tsconfig-paths/register apps/backend/src/main.ts"
 }

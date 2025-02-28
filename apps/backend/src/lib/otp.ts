@@ -17,7 +17,7 @@ export function validateOtp(
 
 export async function createUserOtp(userId: string) {
   const { otp: otpValue, expiresAt } = generateOTP();
-  await db().userOtp.delete({
+  await db().userOtp.deleteMany({
     where: {
       userId,
     },
