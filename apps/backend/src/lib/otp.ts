@@ -1,10 +1,9 @@
 import { db } from "./db";
-import { minutesToMilliseconds } from "./time";
 
 export function generateOTP() {
   return {
     otp: String(Math.ceil(Math.random() * 1000000)),
-    expiresAt: new Date(Date.now() + minutesToMilliseconds(1)),
+    expiresAt: new Date(Date.now() + 1000 * 60),
   };
 }
 

@@ -18,6 +18,7 @@ model User {
   isVerified Boolean     @default(false)
   tokens     UserToken[]
   projects   Project[]
+  Report     Report[]
 }
 
 model UserToken {
@@ -43,4 +44,23 @@ model Project {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Report    Report[]
+}
+
+model Report {
+  id             String   @id @default(uuid())
+  dateTime       DateTime @unique @default(now())
+  totalCalls     Int
+  pitchedCalls   Int
+  callbacks      Int
+  appointments   Int
+  followups      Int
+  recordingsSent Boolean
+  emails         Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      String
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
 }
