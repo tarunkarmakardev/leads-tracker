@@ -24,6 +24,7 @@ export const POST = createController({
         },
       });
       const otp = await createUserOtp(user.id);
+      // TODO: Need to send email with otp
       return res.json({ otp });
     }
   },

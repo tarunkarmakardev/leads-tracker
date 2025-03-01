@@ -59,7 +59,7 @@ model Report {
   emails         Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  project        Project  @relation(fields: [projectId], references: [id])
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId      String
   user           User     @relation(fields: [userId], references: [id])
   userId         String

@@ -6,6 +6,7 @@ import {
   RestControllerBaseSchema,
   RestControllerPaginationSchema,
 } from "@leads-tracker/schemas";
+import { Prisma } from "@prisma/client";
 
 type R = Record<string, any>;
 
@@ -43,6 +44,12 @@ export function createController<
         });
       } else if (error instanceof ControllerError) {
         res.status(error.statusCode).send({ message: error.message });
+      } else if (
+        error instanceof Prisma.PrismaClientKnownRequestError ||
+        error instanceof Prisma.PrismaClientKnownRequestError ||
+        error instanceof Prisma.PrismaClientValidationError
+      ) {
+        res.status(400).send({ message: error.message });
       } else if (error instanceof Error) {
         res.status(500).send({ message: error.message });
       } else {
@@ -68,6 +75,7 @@ type CreateRestControllersOptions<
   PatchData,
   DeleteData
 > = {
+  isProjectBased?: boolean;
   get: {
     searchFields: string[];
     query: (payload: {
@@ -83,7 +91,7 @@ type CreateRestControllersOptions<
   post: {
     parsePayload: (rawPayload: any) => PostPayload;
     mutation: (payload: {
-      data: PostPayload & { userId: string };
+      data: PostPayload & { userId: string; projectId: string };
     }) => Promise<PostData>;
   };
   patch: {
@@ -107,6 +115,7 @@ export function createRestControllers<
   PatchData,
   DeleteData
 >({
+  isProjectBased = true,
   get,
   detail,
   post,
@@ -126,10 +135,12 @@ export function createRestControllers<
       const searchFields = get.searchFields;
       const { q, limit, offset, sortBy, sortOrder } =
         RestControllerPaginationSchema.parse(req.query);
-      let where: any;
+      const where: any = {};
       let orderBy: any;
+      if (isProjectBased) {
+        where.projectId = req.projectId;
+      }
       if (q) {
-        where = {};
         where.OR = searchFields.map((field) => ({
           [field]: {
             contains: q,
@@ -152,22 +163,27 @@ export function createRestControllers<
   const DETAIL = createController({
     handler: async (req, res) => {
       const { id } = RestControllerBaseSchema.parse(req.params);
+      const where: any = {
+        id,
+      };
+      if (isProjectBased) {
+        where.projectId = req.projectId;
+      }
       const result = await detail.query({
-        where: {
-          id,
-        },
+        where,
       });
       return res.json(result);
     },
   });
   const POST = createController({
     handler: async (req, res) => {
-      const data = post.parsePayload({ ...req.body, ...req.params });
+      const data = post.parsePayload({ ...req.body, ...req.params }) as any;
+      data.userId = req.user.id;
+      if (isProjectBased) {
+        data.projectId = req.projectId;
+      }
       const result = await post.mutation({
-        data: {
-          ...data,
-          userId: req.user.id,
-        },
+        data,
       });
       return res.json(result);
     },
@@ -175,10 +191,14 @@ export function createRestControllers<
   const DELETE = createController({
     handler: async (req, res) => {
       const { id } = RestControllerBaseSchema.parse(req.params);
+      const where: any = {
+        id,
+      };
+      if (isProjectBased) {
+        where.projectId = req.projectId;
+      }
       const result = await deleteProp.mutation({
-        where: {
-          id,
-        },
+        where,
       });
       return res.json(result);
     },
@@ -189,10 +209,14 @@ export function createRestControllers<
         ...req.body,
         ...req.params,
       }) as any;
+      const where: any = {
+        id,
+      };
+      if (isProjectBased) {
+        where.projectId = req.projectId;
+      }
       const result = await patch.mutation({
-        where: {
-          id,
-        },
+        where,
         data,
       });
       return res.json(result);

@@ -4,6 +4,7 @@ import { Request } from "express";
 
 export type ProtectedRequest = Request & {
   user: { id: string };
+  projectId: string;
 };
 
 const { SECRET_KEY } = getEnv();

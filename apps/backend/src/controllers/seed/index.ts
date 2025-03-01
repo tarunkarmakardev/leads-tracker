@@ -17,7 +17,7 @@ export const POST = createController({
 });
 
 async function seedProjects(req: ProtectedRequest) {
-  const projects = Array.from({ length: 10 }).map(() => ({
+  const projects = Array.from({ length: 2 }).map(() => ({
     name: faker.company.name(),
     userId: req.user.id,
   }));
@@ -43,7 +43,7 @@ async function seedReports(req: ProtectedRequest) {
         pitchedCalls: faker.number.int({ min: 1, max: 100 }),
         projectId: project.id,
         userId: req.user.id,
-      } satisfies ReportCreatePayload & { userId: string })
+      } satisfies ReportCreatePayload & { userId: string; projectId: string })
   );
   await db().report.deleteMany();
   await db().report.createMany({

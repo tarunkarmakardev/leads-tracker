@@ -12,7 +12,6 @@ export const ReportSchema = z.object({
   emails: z.number(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  projectId: z.string(),
 });
 export const ReportsGetPayloadSchema = z.object({
   projectId: z.string(),
@@ -30,7 +29,6 @@ export const ReportCreatePayloadSchema = ReportSchema.pick({
   followups: true,
   emails: true,
   recordingsSent: true,
-  projectId: true,
 });
 export const ReportCreateDataSchema = ReportSchema;
 export const ReportUpdatePayloadSchema = ReportSchema.pick({
@@ -42,7 +40,6 @@ export const ReportUpdatePayloadSchema = ReportSchema.pick({
   followups: true,
   emails: true,
   recordingsSent: true,
-  projectId: true,
   id: true,
 }).partial({
   dateTime: true,

@@ -7,6 +7,7 @@ import authMiddleware from "./middleware/auth";
 import projectsRouter from "./routers/projects";
 import seedRouter from "./routers/seed";
 import reportsRouter from "./routers/reports";
+import projectMiddleware from "./middleware/project";
 
 const env = getEnv();
 const app: Application = express();
@@ -23,7 +24,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRouter);
 app.use("/seed", authMiddleware, seedRouter);
 app.use("/projects", authMiddleware, projectsRouter);
-app.use("/reports", authMiddleware, reportsRouter);
+app.use("/reports", authMiddleware, projectMiddleware, reportsRouter);
 app.listen(PORT, async () => {
   console.log(chalk.yellow(`SERVER IS UP ON PORT: ${PORT}`));
   if (isDev()) {
