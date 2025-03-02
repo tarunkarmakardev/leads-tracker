@@ -1,18 +1,19 @@
-import './index.css';
-import LayoutContainer from './layout-container';
+import "./index.css";
+import Providers from "./providers";
+import RootLayout from "./root-layout";
 
 export const metadata = {
-  title: 'Sales Calls Logger',
-  description: 'Sales Calls Logger',
+  title: "Sales Calls Logger",
+  description: "Sales Calls Logger",
 };
 
-export default function RootLayout({
-  children,
-}: React.PropsWithChildren<object>) {
+export default function Layout({ children }: React.PropsWithChildren<object>) {
   return (
     <html lang="en">
       <body>
-        <LayoutContainer>{children}</LayoutContainer>
+        <Providers>
+          <RootLayout>{children}</RootLayout>
+        </Providers>
       </body>
     </html>
   );
