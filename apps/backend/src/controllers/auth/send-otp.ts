@@ -1,4 +1,4 @@
-import { createController } from "@/lib/controller";
+import { ControllerError, createController } from "@/lib/controller";
 import { db } from "@/lib/db";
 import { createUserOtp } from "@/lib/otp";
 import { SendOtpPostPayloadSchema } from "@leads-tracker/schemas";
@@ -13,7 +13,10 @@ export const POST = createController({
     });
     if (existingUser) {
       const otp = await createUserOtp(existingUser.id);
-      return res.json({ otp });
+      if (payload.firstName || payload.lastName) {
+        throw new ControllerError("User already exists");
+      }
+      return res.json({ otp: otp.otp });
     } else {
       const payload = SendOtpPostPayloadSchema.required().parse(req.body);
       const user = await db().user.create({
@@ -25,7 +28,7 @@ export const POST = createController({
       });
       const otp = await createUserOtp(user.id);
       // TODO: Need to send email with otp
-      return res.json({ otp });
+      return res.json({ otp: otp.otp });
     }
   },
 });

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useQuery, UseQueryOptions } from "react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { GET } from "../api";
 import useRefetchQuery from "@/hooks/useRefetchQuery";
 import {
@@ -22,7 +22,11 @@ export const useGetAppointmentChart = (
   >
 ) => {
   const { from } = payload;
-  return useQuery([GET_QUERY_KEY, from], () => GET(payload), options);
+  return useQuery({
+    queryKey: [GET_QUERY_KEY, from],
+    queryFn: () => GET(payload),
+    ...options,
+  });
 };
 
 export const useRefetchGetAppointmentChart = () => {

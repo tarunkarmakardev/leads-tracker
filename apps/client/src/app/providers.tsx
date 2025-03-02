@@ -11,9 +11,9 @@ export default function Providers({ children }: React.PropsWithChildren) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <CssBaseline />
       <GlobalStoreProvider>
-        <QueryProvider>
-          <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
-        </QueryProvider>
+        <SnackbarProvider maxSnack={3}>
+          <QueryProvider>{children}</QueryProvider>
+        </SnackbarProvider>
       </GlobalStoreProvider>
     </LocalizationProvider>
   );

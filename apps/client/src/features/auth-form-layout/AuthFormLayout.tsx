@@ -19,6 +19,7 @@ export default function AuthFormLayout({
         alignItems: "center",
         width: "min(576px, 100%)",
         mx: "auto",
+        mt: 8,
       }}
     >
       <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>

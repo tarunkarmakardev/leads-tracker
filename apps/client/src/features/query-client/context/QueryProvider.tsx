@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Stack, Typography } from "@mui/material";
 import { AxiosError } from "axios";
-import { useSnackbar } from "notistack";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { enqueueSnackbar } from "notistack";
+import {
+  QueryClientProvider,
+  QueryClient,
+  QueryCache,
+} from "@tanstack/react-query";
 import { useState } from "react";
 
 type AxiosErrorMessageProps = {
@@ -25,24 +29,30 @@ function AxiosErrorMessage({ data }: AxiosErrorMessageProps) {
   );
 }
 
-const QueryProvider = (props: React.PropsWithChildren<object>) => {
-  const [queryClient] = useState(() => new QueryClient());
-  const notification = useSnackbar();
-  const handleError = (data: any) => {
-    notification.enqueueSnackbar(<AxiosErrorMessage data={data} />, {
-      variant: "error",
-    });
-  };
-
-  queryClient.setDefaultOptions({
-    mutations: {
-      onError: handleError,
-    },
-    queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
-    },
+const handleError = (data: any) => {
+  enqueueSnackbar(<AxiosErrorMessage data={data} />, {
+    variant: "error",
   });
+};
+
+const QueryProvider = (props: React.PropsWithChildren<object>) => {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          mutations: {
+            onError: handleError,
+          },
+          queries: {
+            retry: false,
+            refetchOnWindowFocus: false,
+          },
+        },
+        queryCache: new QueryCache({
+          onError: handleError,
+        }),
+      })
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
