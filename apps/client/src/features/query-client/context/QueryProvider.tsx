@@ -2,9 +2,8 @@
 import { Stack, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { useSnackbar } from "notistack";
-import { QueryClientProvider, QueryClient } from "react-query";
-
-const queryClient = new QueryClient();
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 type AxiosErrorMessageProps = {
   data: AxiosError;
@@ -27,6 +26,7 @@ function AxiosErrorMessage({ data }: AxiosErrorMessageProps) {
 }
 
 const QueryProvider = (props: React.PropsWithChildren<object>) => {
+  const [queryClient] = useState(() => new QueryClient());
   const notification = useSnackbar();
   const handleError = (data: any) => {
     notification.enqueueSnackbar(<AxiosErrorMessage data={data} />, {
@@ -39,7 +39,6 @@ const QueryProvider = (props: React.PropsWithChildren<object>) => {
       onError: handleError,
     },
     queries: {
-      onError: handleError,
       retry: false,
       refetchOnWindowFocus: false,
     },
