@@ -1,18 +1,17 @@
 "use client";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Paper, IconButton, Stack } from "@mui/material";
-import { useReduxDispatch } from "@/redux/hooks";
-import { toggleOpen } from "../nav-bar/slices/navbarSlice";
 import { BrandLogo } from "./BrandLogo";
 import { Profile } from "./Profile";
 import SignIn from "../auth-handler/components/sign-in";
 import ClientOnly from "../client-only";
+import { useGlobalStore } from "../global-store/context";
 
 export default function TopBar() {
-  const dispatch = useReduxDispatch();
+  const toggleOpen = useGlobalStore((s) => s.toggleNavbarOpen);
 
   const handleMenuClick = () => {
-    dispatch(toggleOpen());
+    toggleOpen();
   };
 
   return (

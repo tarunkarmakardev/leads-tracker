@@ -13,18 +13,17 @@ import {
 import Link from "next/link";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
-import { useReduxDispatch, useReduxSelector } from "@/redux/hooks";
-import { selectIsNavbarOpen, setOpen } from "./slices/navbarSlice";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../auth-handler/hooks";
+import { useGlobalStore } from "../global-store/context";
 
 function NavContainer({ children }: React.PropsWithChildren) {
-  const isNavOpen = useReduxSelector(selectIsNavbarOpen);
+  const isNavOpen = useGlobalStore((s) => s.navbarOpen);
+  const setNavbarOpen = useGlobalStore((s) => s.setNavbarOpen);
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
-  const dispatch = useReduxDispatch();
   const handleMenuClose = () => {
-    dispatch(setOpen(false));
+    setNavbarOpen(false);
   };
 
   const renderMenu = () => (
@@ -60,7 +59,7 @@ interface NavLinkProps {
 }
 
 function NavLink({ href, icon: Icon, text }: NavLinkProps) {
-  const isNavOpen = useReduxSelector(selectIsNavbarOpen);
+  const isNavOpen = useGlobalStore((s) => s.navbarOpen);
   const pathName = usePathname();
   const isActive = pathName.includes(href);
   const activeColor = isActive ? "info.main" : "text.main";
@@ -100,7 +99,7 @@ export default function Navbar() {
   return (
     <NavContainer>
       <NavLink href="/dashboard" text="Dashboard" icon={DashboardIcon} />
-      <NavLink href="/stats/calls" text="Stats" icon={TimelineIcon} />
+      <NavLink href="/reports" text="Reports" icon={TimelineIcon} />
     </NavContainer>
   );
 }
