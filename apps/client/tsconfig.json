@@ -21,7 +21,8 @@
       }
     ],
     "paths": {
-      "@/*": ["apps/client/src/*"]
+      "@/*": ["apps/client/src/*"],
+      "@leads-tracker/schemas": ["libs/schemas/src/index.ts"]
     }
   },
   "include": [

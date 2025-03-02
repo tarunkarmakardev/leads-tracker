@@ -26,6 +26,7 @@ app.use("/seed", authMiddleware, seedRouter);
 app.use("/projects", authMiddleware, projectsRouter);
 app.use("/reports", authMiddleware, projectMiddleware, reportsRouter);
 app.listen(PORT, async () => {
+  // eslint-disable-next-line no-console
   console.log(chalk.yellow(`SERVER IS UP ON PORT: ${PORT}`));
   if (isDev()) {
     // Populating code goes here
