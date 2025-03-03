@@ -6,7 +6,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({ children }: PageHeaderProps) {
   return (
-    <Stack direction="row" gap={2} py={2}>
+    <Stack direction="row" gap={2} mb={2}>
       {children}
     </Stack>
   );

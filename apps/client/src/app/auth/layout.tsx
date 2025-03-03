@@ -3,9 +3,7 @@
 import { BrandLogo } from "@/features/top-bar/BrandLogo";
 import { Container, Paper } from "@mui/material";
 
-export default function RootLayout({
-  children,
-}: React.PropsWithChildren<object>) {
+export default function Layout({ children }: React.PropsWithChildren<object>) {
   return (
     <>
       <Paper sx={{ p: 2 }}>

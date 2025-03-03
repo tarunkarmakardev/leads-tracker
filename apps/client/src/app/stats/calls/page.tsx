@@ -1,8 +1,8 @@
 "use client";
-import CallStatsLayout from "@/features/call-stats-layout/CallStatsLayout";
-import CallStatsList from "@/features/call-stats-list";
+import CallStatsLayout from "@/features/reports-layout/CallStatsLayout";
+import CallStatsList from "@/features/reports-list";
 import { useGetCallStat } from "@/services/call-stats/hooks";
-import CallStatsTabs from "@/features/call-stats-tabs";
+import CallStatsTabs from "@/features/reports-tabs";
 
 export default function CalLStatsList() {
   const getAPI = useGetCallStat({});

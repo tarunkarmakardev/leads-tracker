@@ -7,6 +7,7 @@ export function createBackendProxyRoute(request: NextRequest) {
   if (isMatch) {
     url.pathname = url.pathname.split(beProxyPath)[1];
     url = new URL(beUrl(url.pathname));
+    url.search = request.nextUrl.search;
     return url;
   }
 }

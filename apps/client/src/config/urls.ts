@@ -19,10 +19,34 @@ export const endpoints = {
     signupSendOtp: beProxyUrl("/auth/signup/send-otp"),
     verifyOtp: "/api/auth/verify-otp",
   },
+  reports: {
+    list: beProxyUrl("/reports"),
+    detail: (id: string) => beProxyUrl(`/reports/${id}`),
+    patch: (id: string) => beProxyUrl(`/reports/${id}`),
+    delete: (id: string) => beProxyUrl(`/reports/${id}`),
+  },
+  projects: {
+    list: beProxyUrl("/projects"),
+    detail: (id: string) => beProxyUrl(`/projects/${id}`),
+    patch: (id: string) => beProxyUrl(`/projects/${id}`),
+    delete: (id: string) => beProxyUrl(`/projects/${id}`),
+  },
 };
 export const navigationUrls = {
   auth: {
     signIn: "/auth/sign-in",
     signUp: "/auth/sign-up",
+  },
+  report: {
+    list: "/reports",
+    detail: (id: string) => `/reports/${id}`,
+    edit: (id: string) => `/reports/${id}/edit`,
+    create: "/reports/create",
+  },
+  projects: {
+    list: "/projects",
+    detail: (id: string) => `/projects/${id}`,
+    edit: (id: string) => `/projects/${id}/edit`,
+    create: "/projects/create",
   },
 };

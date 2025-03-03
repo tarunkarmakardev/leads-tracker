@@ -10,10 +10,17 @@ export default function AppLayout({
   return (
     <>
       <TopBar />
-      <Stack component="main" direction="row" sx={{ height: BODY_HEIGHT }}>
+      <Stack component="main" direction="row">
         <Navbar />
-        <Box sx={{ overflow: "auto", flex: 1, bgcolor: "grey.50" }}>
-          <Container sx={{ height: BODY_HEIGHT }}>{children}</Container>
+        <Box
+          sx={{
+            overflow: "auto",
+            flex: 1,
+            bgcolor: "grey.50",
+            height: BODY_HEIGHT,
+          }}
+        >
+          <Container maxWidth="xl">{children}</Container>
         </Box>
       </Stack>
     </>

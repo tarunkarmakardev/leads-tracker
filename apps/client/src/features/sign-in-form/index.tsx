@@ -28,7 +28,7 @@ export default function SignInForm() {
   const postVerifyOtp = useMutation({
     mutationFn: (values: SigninFormValues) => {
       return api.post(endpoints.auth.verifyOtp, {
-        email: postSendOtp.variables?.email,
+        email: values.email,
         otp: values.otp,
       });
     },

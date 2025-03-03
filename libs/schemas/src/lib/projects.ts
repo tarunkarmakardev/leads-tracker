@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { RestControllerPaginationSchema } from "./rest-controller";
 
 export const ProjectSchema = z.object({
   id: z.string(),
@@ -23,21 +24,14 @@ export const ProjectDetailPayloadSchema = ProjectSchema.pick({
   id: true,
 });
 export const ProjectDetailDataSchema = ProjectSchema;
-export const ProjectGetPayloadSchema = z.object({
-  q: z.string().optional(),
-  limit: z.string().transform((v) => Number(v)),
-  offset: z.string().transform((v) => Number(v)),
-  sortBy: z.string().optional(),
-  sortOrder: z.enum(["asc", "desc"]).optional(),
-});
-export const ProjectGetDataSchema = z.object({
-  total: z.number(),
+export const ProjectsGetPayloadSchema = RestControllerPaginationSchema;
+export const ProjectsGetDataSchema = z.object({
   results: z.array(ProjectSchema),
 });
 
-export type Project = z.infer<typeof ProjectSchema>;
-export type ProjectGetPayload = z.infer<typeof ProjectGetPayloadSchema>;
-export type ProjectGetData = z.infer<typeof ProjectGetDataSchema>;
+export type ProjectItem = z.infer<typeof ProjectSchema>;
+export type ProjectsGetPayload = z.infer<typeof ProjectsGetPayloadSchema>;
+export type ProjectsGetData = z.infer<typeof ProjectsGetDataSchema>;
 export type ProjectDetailPayload = z.infer<typeof ProjectDetailPayloadSchema>;
 export type ProjectDetailData = z.infer<typeof ProjectDetailDataSchema>;
 export type ProjectCreatePayload = z.infer<typeof ProjectCreatePayloadSchema>;

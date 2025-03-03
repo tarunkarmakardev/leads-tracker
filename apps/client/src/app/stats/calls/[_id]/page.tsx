@@ -1,7 +1,7 @@
 "use client";
 
 import CallStatDetail from "@/features/call-stat-detail";
-import CallStatsLayout from "@/features/call-stats-layout";
+import CallStatsLayout from "@/features/reports-layout";
 import { useDetailCallStat } from "@/services/call-stats/hooks";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Button } from "@mui/material";

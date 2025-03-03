@@ -21,6 +21,7 @@ export const backendProxyMiddleware: MiddlewareFactory =
         Referer: request.headers.get("referer") ?? "",
         "Content-Type":
           request.headers.get("Content-Type") ?? "application/json",
+        "Project-Id": request.headers.get("Project-Id") ?? "",
       };
       const accessToken = await getSession();
       if (accessToken) {

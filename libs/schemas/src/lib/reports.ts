@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { RestControllerPaginationSchema } from "./rest-controller";
 
 export const ReportSchema = z.object({
   id: z.string().uuid(),
@@ -13,11 +14,8 @@ export const ReportSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
 });
-export const ReportsGetPayloadSchema = z.object({
-  projectId: z.string(),
-});
+export const ReportsGetPayloadSchema = RestControllerPaginationSchema;
 export const ReportsGetDataSchema = z.object({
-  total: z.number(),
   results: z.array(ReportSchema),
 });
 export const ReportCreatePayloadSchema = ReportSchema.pick({
@@ -61,7 +59,7 @@ export const ReportDetailPayloadSchema = ReportSchema.pick({
 });
 export const ReportDetailDataSchema = ReportSchema;
 
-export type Report = z.infer<typeof ReportSchema>;
+export type ReportItem = z.infer<typeof ReportSchema>;
 export type ReportsGetPayload = z.infer<typeof ReportsGetPayloadSchema>;
 export type ReportsGetData = z.infer<typeof ReportsGetDataSchema>;
 export type ReportCreatePayload = z.infer<typeof ReportCreatePayloadSchema>;

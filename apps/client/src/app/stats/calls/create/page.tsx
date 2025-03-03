@@ -5,8 +5,8 @@ import { usePostCallStat } from "@/services/call-stats/hooks";
 import AddCallStatForm from "@/features/call-stat-form/AddCallStatForm";
 import { CallStatsFormValues } from "@/features/call-stat-form/common.types";
 import { useSnackbar } from "notistack";
-import CallStatsLayout from "@/features/call-stats-layout/CallStatsLayout";
-import CallStatsTabs from "@/features/call-stats-tabs";
+import CallStatsLayout from "@/features/reports-layout/CallStatsLayout";
+import CallStatsTabs from "@/features/reports-tabs";
 
 export default function CalLStatsCreate() {
   const postAPI = usePostCallStat();
