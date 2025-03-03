@@ -1,10 +1,10 @@
-import { proxiedApiEndpoints } from "@/config/urls";
+import { directEndpoints } from "@/config/urls";
 import { createSession } from "@/server-lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
-  const res = await fetch(proxiedApiEndpoints.auth.verifyOtp, {
+  const res = await fetch(directEndpoints.auth.verifyOtp, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

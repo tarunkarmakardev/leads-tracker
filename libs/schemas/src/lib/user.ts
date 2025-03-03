@@ -11,12 +11,16 @@ export const UserSchema = z.object({
   isVerified: z.boolean(),
 });
 
-export const SendOtpPostPayloadSchema = UserSchema.pick({
+export const SignupPostPayloadSchema = UserSchema.pick({
   email: true,
   firstName: true,
   lastName: true,
-}).partial({ firstName: true, lastName: true });
+});
+export const SigninPostPayloadSchema = UserSchema.pick({
+  email: true,
+});
 
-export type SendOtpPostPayload = z.infer<typeof SendOtpPostPayloadSchema>;
+export type SignupPostPayload = z.infer<typeof SignupPostPayloadSchema>;
+export type SigninPostPayload = z.infer<typeof SigninPostPayloadSchema>;
 
 export type User = z.infer<typeof UserSchema>;

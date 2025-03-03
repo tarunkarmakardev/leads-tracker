@@ -1,11 +1,15 @@
-import { SendOtpPostPayloadSchema } from "@leads-tracker/schemas";
+import {
+  SigninPostPayloadSchema,
+  SignupPostPayloadSchema,
+} from "@leads-tracker/schemas";
 import { z } from "zod";
 
-export const SignInFormSchema = SendOtpPostPayloadSchema.extend({
+export const SigninFormSchema = SigninPostPayloadSchema.extend({
   otp: z.string(),
 });
-export const SignupFormSchema = SendOtpPostPayloadSchema.extend({
+export const SignupFormSchema = SignupPostPayloadSchema.extend({
   otp: z.string(),
-}).required();
-export type SignInFormValues = z.infer<typeof SignInFormSchema>;
+});
+
+export type SigninFormValues = z.infer<typeof SigninFormSchema>;
 export type SignupFormValues = z.infer<typeof SignupFormSchema>;

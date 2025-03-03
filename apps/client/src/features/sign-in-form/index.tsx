@@ -5,14 +5,14 @@ import { Box, Grid2 as Grid, Link, Typography } from "@mui/material";
 import NextLink from "next/link";
 import TextInputField from "../text-input-field";
 import LoadingButton from "../loading-button";
-import { SignInFormSchema, SignInFormValues } from "@/schemas/auth";
+import { SigninFormSchema, SigninFormValues } from "@/schemas/auth";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import { apiEndpoints } from "@/config/urls";
+import { endpoints } from "@/config/urls";
 import { useSnackbar } from "notistack";
 
-export const initialValues: SignInFormValues = {
+export const initialValues: SigninFormValues = {
   email: "",
   otp: "",
 };
@@ -21,19 +21,19 @@ export default function SignInForm() {
   const [showSendOtp, { setFalse }] = useBoolean(true);
   const { enqueueSnackbar } = useSnackbar();
   const postSendOtp = useMutation({
-    mutationFn: (values: SignInFormValues) => {
-      return api.post(apiEndpoints.auth.sendOtp, values);
+    mutationFn: (values: SigninFormValues) => {
+      return api.post(endpoints.auth.signinSendOtp, values);
     },
   });
   const postVerifyOtp = useMutation({
-    mutationFn: (values: SignInFormValues) => {
-      return api.post(apiEndpoints.auth.verifyOtp, {
+    mutationFn: (values: SigninFormValues) => {
+      return api.post(endpoints.auth.verifyOtp, {
         email: postSendOtp.variables?.email,
         otp: values.otp,
       });
     },
   });
-  const handleSendOtp = (values: SignInFormValues) => {
+  const handleSendOtp = (values: SigninFormValues) => {
     postSendOtp.mutate(values, {
       onSuccess: () => {
         enqueueSnackbar({
@@ -44,11 +44,11 @@ export default function SignInForm() {
       },
     });
   };
-  const handleSubmit = (values: SignInFormValues) => {
+  const handleSubmit = (values: SigninFormValues) => {
     postVerifyOtp.mutate(values);
   };
 
-  const renderOtpForm = (f: FormikProps<SignInFormValues>) => {
+  const renderOtpForm = (f: FormikProps<SigninFormValues>) => {
     if (showSendOtp) {
       return (
         <>
@@ -95,7 +95,7 @@ export default function SignInForm() {
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={toFormikValidationSchema(SignInFormSchema)}
+      validationSchema={toFormikValidationSchema(SigninFormSchema)}
     >
       {(f) => (
         <Box

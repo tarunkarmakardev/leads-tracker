@@ -8,7 +8,7 @@ import { SignupFormSchema, SignupFormValues } from "@/schemas/auth";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useBoolean } from "ahooks";
 import { api } from "@/lib/axios";
-import { apiEndpoints } from "@/config/urls";
+import { endpoints } from "@/config/urls";
 import { useMutation } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 
@@ -24,12 +24,12 @@ export default function SignUpForm() {
   const { enqueueSnackbar } = useSnackbar();
   const postSendOtp = useMutation({
     mutationFn: (values: SignupFormValues) => {
-      return api.post(apiEndpoints.auth.sendOtp, values);
+      return api.post(endpoints.auth.signupSendOtp, values);
     },
   });
   const postVerifyOtp = useMutation({
     mutationFn: (values: SignupFormValues) => {
-      return api.post(apiEndpoints.auth.verifyOtp, {
+      return api.post(endpoints.auth.verifyOtp, {
         email: postSendOtp.variables?.email,
         otp: values.otp,
       });

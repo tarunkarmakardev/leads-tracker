@@ -6,15 +6,17 @@ export const beUrl = (url: string) => `${NEXT_PUBLIC_API_URL}${url}`;
 export const beProxyPath = "/lt-backend";
 export const beProxyUrl = (url: string) => `${beProxyPath}${url}`;
 
-export const proxiedApiEndpoints = {
+export const directEndpoints = {
   auth: {
     verifyOtp: beUrl("/auth/verify-otp"),
   },
 };
 
-export const apiEndpoints = {
+// To be used in client
+export const endpoints = {
   auth: {
-    sendOtp: beProxyUrl("/auth/send-otp"),
+    signinSendOtp: beProxyUrl("/auth/signin/send-otp"),
+    signupSendOtp: beProxyUrl("/auth/signup/send-otp"),
     verifyOtp: "/api/auth/verify-otp",
   },
 };
