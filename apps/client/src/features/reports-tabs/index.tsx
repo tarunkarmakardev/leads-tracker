@@ -1,9 +1,9 @@
 "use client";
-
 import { Tabs, Tab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
 import { usePathname, useRouter } from "next/navigation";
+import { navigationUrls } from "@/config/urls";
 
 export default function ReportsTabs() {
   const pathName = usePathname();
@@ -12,17 +12,17 @@ export default function ReportsTabs() {
     <Tabs value={pathName} onChange={(e, value) => router.push(value)}>
       <Tab
         icon={<ListIcon />}
-        value="/reports/list"
+        sx={{ minHeight: 48 }}
+        value={navigationUrls.reports.list}
         label="List"
         iconPosition="start"
-        sx={{ minHeight: "56px" }}
       />
       <Tab
         icon={<AddIcon />}
-        value="/reports/create"
+        sx={{ minHeight: 48 }}
+        value={navigationUrls.reports.create}
         label="Create"
         iconPosition="start"
-        sx={{ minHeight: "56px" }}
       />
     </Tabs>
   );

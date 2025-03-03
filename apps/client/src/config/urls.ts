@@ -33,18 +33,19 @@ export const endpoints = {
   },
 };
 export const navigationUrls = {
+  dashboard: "/dashboard",
   auth: {
     signIn: "/auth/sign-in",
     signUp: "/auth/sign-up",
   },
-  report: {
-    list: "/reports",
+  reports: {
+    list: "/reports/list",
     detail: (id: string) => `/reports/${id}`,
     edit: (id: string) => `/reports/${id}/edit`,
     create: "/reports/create",
   },
   projects: {
-    list: "/projects",
+    list: "/projects/list",
     detail: (id: string) => `/projects/${id}`,
     edit: (id: string) => `/projects/${id}/edit`,
     create: "/projects/create",

@@ -14,8 +14,8 @@ import Link from "next/link";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import { usePathname } from "next/navigation";
-import { useAuth } from "../auth-handler/hooks";
 import { useGlobalStore } from "../global-store/context";
+import { navigationUrls } from "@/config/urls";
 
 function NavContainer({ children }: React.PropsWithChildren) {
   const isNavOpen = useGlobalStore((s) => s.navbarOpen);
@@ -94,12 +94,18 @@ function NavLink({ href, icon: Icon, text }: NavLinkProps) {
 }
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) return null;
   return (
     <NavContainer>
-      <NavLink href="/dashboard" text="Dashboard" icon={DashboardIcon} />
-      <NavLink href="/reports" text="Reports" icon={TimelineIcon} />
+      <NavLink
+        href={navigationUrls.dashboard}
+        text="Dashboard"
+        icon={DashboardIcon}
+      />
+      <NavLink
+        href={navigationUrls.reports.list}
+        text="Reports"
+        icon={TimelineIcon}
+      />
     </NavContainer>
   );
 }

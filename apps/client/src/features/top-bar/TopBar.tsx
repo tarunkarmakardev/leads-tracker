@@ -71,6 +71,7 @@ function SelectProject() {
         onChange({ projectId: item?.id });
         queryClient.refetchQueries();
       }}
+      loading={getQuery.isFetching}
       options={results}
       sx={{ width: 180 }}
       renderInput={(params) => (

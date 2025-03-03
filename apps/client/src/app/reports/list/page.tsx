@@ -1,23 +1,23 @@
 "use client";
-import ReportsLayout from "@/features/reports-layout";
 import ReportsList from "@/features/reports-list";
-import ReportsTabs from "@/features/reports-tabs";
+import Spinner from "@/features/spinner";
 import { useGetReports } from "@/services/reports";
 
 const payload = {
-  limit: "100",
-  offset: "0",
+  limit: 100,
+  offset: 0,
 };
 export default function Page() {
   const getQuery = useGetReports(payload);
   const { results = [] } = getQuery.data || {};
   return (
-    <ReportsLayout
-      title="Reports"
-      headerComponent={<ReportsTabs />}
+    <Spinner
       loading={getQuery.isFetching}
+      loaderProps={{
+        sx: { my: 12 },
+      }}
     >
       <ReportsList items={results} />
-    </ReportsLayout>
+    </Spinner>
   );
 }
