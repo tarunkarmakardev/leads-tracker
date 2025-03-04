@@ -11,10 +11,8 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import PowerSettingsIcon from "@mui/icons-material/PowerSettingsNew";
 import Link from "next/link";
-import { useAuth } from "../auth-handler/hooks";
 
 export function Profile() {
-  const { signOut, isAuthenticated } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleOpen = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -27,9 +25,7 @@ export function Profile() {
 
   const handleSignOut = () => {
     handleClose();
-    signOut();
   };
-  if (!isAuthenticated) return null;
 
   return (
     <Box px={2}>

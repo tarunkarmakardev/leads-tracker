@@ -1,5 +1,5 @@
 "use client";
-import { type ReactNode, createContext, useRef, useContext } from "react";
+import { type ReactNode, createContext, useRef } from "react";
 import { useStore } from "zustand";
 import { type GlobalStore, createGlobalStore } from "../store";
 import useContextOrError from "@/hooks/useContextOrError";

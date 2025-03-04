@@ -9,8 +9,9 @@ import { SigninFormSchema, SigninFormValues } from "@/schemas/auth";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import { endpoints } from "@/config/urls";
+import { endpoints, navigationUrls } from "@/config/urls";
 import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 export const initialValues: SigninFormValues = {
   email: "",
@@ -18,6 +19,7 @@ export const initialValues: SigninFormValues = {
 };
 
 export default function SignInForm() {
+  const router = useRouter();
   const [showSendOtp, { setFalse }] = useBoolean(true);
   const { enqueueSnackbar } = useSnackbar();
   const postSendOtp = useMutation({
@@ -45,7 +47,9 @@ export default function SignInForm() {
     });
   };
   const handleSubmit = (values: SigninFormValues) => {
-    postVerifyOtp.mutate(values);
+    postVerifyOtp.mutate(values, {
+      onSuccess: () => router.push(navigationUrls.reports.list),
+    });
   };
 
   const renderOtpForm = (f: FormikProps<SigninFormValues>) => {

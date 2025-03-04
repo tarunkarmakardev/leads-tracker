@@ -2,10 +2,13 @@
 import ReportsList from "@/features/reports-list";
 import Spinner from "@/features/spinner";
 import { useGetReports } from "@/services/reports";
+import { ReportsGetPayload } from "@leads-tracker/schemas";
 
-const payload = {
+const payload: ReportsGetPayload = {
   limit: 100,
   offset: 0,
+  sortBy: "dateTime",
+  sortOrder: "desc",
 };
 export default function Page() {
   const getQuery = useGetReports(payload);

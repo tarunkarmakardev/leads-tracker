@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 

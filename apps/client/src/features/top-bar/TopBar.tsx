@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { BrandLogo } from "./BrandLogo";
 import { Profile } from "./Profile";
-import SignIn from "../auth-handler/components/sign-in";
 import ClientOnly from "../client-only";
 import { useGlobalStore } from "../global-store/context";
 import { useLocalStorageState } from "ahooks";
@@ -37,7 +36,6 @@ export default function TopBar() {
           <Stack direction="row" gap={2} alignItems="center" ml="auto">
             <SelectProject />
             <Profile />
-            <SignIn />
           </Stack>
         </Stack>
       </Paper>

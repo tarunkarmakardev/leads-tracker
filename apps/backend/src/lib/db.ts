@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
+const client = new PrismaClient();
+
 export function db() {
-  const client = new PrismaClient();
   return client;
 }

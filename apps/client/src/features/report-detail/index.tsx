@@ -6,50 +6,68 @@ import PhoneForwardedIcon from "@mui/icons-material/PhoneForwarded";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import GridItemStat from "./StatGridItem";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { ReportItem } from "@leads-tracker/schemas";
-import EditReport from "@/features/edit-report";
-import DeleteReport from "@/features/delete-report";
-import ViewReport from "@/features/view-report";
+import EditReport from "../edit-report";
+import DeleteReport from "../delete-report";
 
-interface StatCardProps {
+interface ReportDetailProps {
   item: ReportItem;
 }
-
-export default function StatCard({ item }: StatCardProps) {
-  const { totalCalls, appointments, callbacks, followups, pitchedCalls } = item;
+export default function ReportDetail({ item }: ReportDetailProps) {
+  const {
+    appointments,
+    callbacks,
+    totalCalls,
+    followups,
+    pitchedCalls,
+    recordingsSent,
+    dateTime,
+  } = item;
   return (
-    <Paper elevation={2} sx={{ p: 4 }}>
+    <Paper sx={{ p: 2 }}>
       <Grid container spacing={1}>
         <Grid item xs={8}>
           <Grid container spacing={1}>
             <Grid item xs={12} display="flex" gap={1} mb={4}>
               <CalendarMonthIcon color="info" />
               <Typography>
-                Call Date: {dayjs(item.dateTime).format("DD MMM, YYYY ddd")}
+                Call Date: {dayjs(dateTime).format("DD MMM, YYYY ddd")}
               </Typography>
             </Grid>
-            <GridItemStat>
+            <Grid item xs={12} mb={2}>
+              <Typography variant="h5">Basic Details</Typography>
+            </Grid>
+            <Grid item xs={12} display="flex" gap={1}>
               <LocalPhoneIcon color="info" />
               <Typography>Calls: {totalCalls}</Typography>
-            </GridItemStat>
-            <GridItemStat>
+            </Grid>
+            <Grid item xs={12} display="flex" gap={1}>
               <PhoneCallbackIcon color="info" />
               <Typography>Call Backs: {callbacks}</Typography>
-            </GridItemStat>
-            <GridItemStat>
+            </Grid>
+            <Grid item xs={12} display="flex" gap={1}>
               <PhoneForwardedIcon color="info" />
               <Typography>Follow Ups: {followups}</Typography>
-            </GridItemStat>
-            <GridItemStat>
+            </Grid>
+            <Grid item xs={12} display="flex" gap={1}>
               <PermPhoneMsgIcon color="info" />
               <Typography>Pitched: {pitchedCalls}</Typography>
-            </GridItemStat>
-
-            <GridItemStat>
+            </Grid>
+            {/* <Grid item xs={12} display="flex" gap={1}>
+              <AccessTimeIcon color="info" />
+              <Typography>Non production: {totalHrs} Hrs</Typography>
+            </Grid> */}
+            <Grid item xs={12} display="flex" gap={1}>
               <PersonAddIcon color="info" />
               <Typography>Appointments: {appointments}</Typography>
-            </GridItemStat>
+            </Grid>
+            <Grid item xs={12} display="flex" gap={1} mb={2}>
+              <RadioButtonCheckedIcon color="info" />
+              <Typography>
+                Recordings Sent: {recordingsSent ? "Yes" : "No"}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
         <Grid item xs={4}>
@@ -63,7 +81,6 @@ export default function StatCard({ item }: StatCardProps) {
             >
               <EditReport item={item} />
               <DeleteReport item={item} />
-              <ViewReport item={item} />
             </Grid>
           </Grid>
         </Grid>
