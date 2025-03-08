@@ -14,7 +14,7 @@
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register apps/backend/src/app.ts"
+        "command": "cross-env NODE_ENV=production ts-node --project apps/backend/tsconfig.json -r tsconfig-paths/register apps/backend/src/main.ts"
       }
     },
     "ts-lint": {
