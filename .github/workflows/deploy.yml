@@ -1,42 +1,40 @@
-name: deploy
+name: Deploy to Cloud Run
+
+env:
+  SERVICE_NAME: leads-tracker-be
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch
 jobs:
-  aws-deploy:
-    name: Deploy to AWS
+  dockerize-and-deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app-name: ["leads-tracker"]
-        deploy-group: ["personal-ec2-deployment-group"]
-        s3-bucket: ["personal-ec2-deployment-s3"]
-        s3-filename: ["leads-tracker-aws-codedeploy-${{ github.sha }}"]
-        region: ["ap-south-1"]
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
-          aws-region: ${{ matrix.region }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Push to s3
+      - name: Configure Docker
         run: |
-          aws deploy push \
-          --application-name ${{ matrix.app-name }} \
-          --description "This is a revision for the ${{ matrix.app-name }}-${{ github.sha }}" \
-          --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
-          --source .
+          gcloud auth configure-docker
 
-      - name: AWS Create Deployment using Codedeploy
+      - name: Build and Push Docker Image
         run: |
-          aws deploy create-deployment \
-           --application-name ${{ matrix.app-name }} \
-           --deployment-config-name CodeDeployDefault.OneAtATime \
-           --deployment-group-name ${{ matrix.deploy-group }} \
-           --file-exists-behavior OVERWRITE \
-           --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest -f apps/backend/Dockerfile .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated

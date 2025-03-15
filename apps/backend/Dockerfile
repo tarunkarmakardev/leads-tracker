@@ -1,8 +1,9 @@
-FROM node:18-alpine3.17
+FROM node:23-alpine
 WORKDIR /app
-COPY package.json .
-RUN yarn set version berry
-RUN yarn config set nodeLinker node-modules
-RUN yarn
+COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm --force
 COPY . .
-CMD [ "yarn", "start:prod" ]
+RUN pnpm install
+RUN pnpx prisma generate
+ENV PORT=8080
+CMD ["sh", "-c", "pnpm nx run backend:start"]
