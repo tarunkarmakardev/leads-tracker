@@ -1,10 +1,9 @@
-FROM node:18-alpine3.17
+FROM node:23-alpine
 WORKDIR /app
-COPY package.json .
-RUN yarn set version berry
-RUN yarn config set nodeLinker node-modules
-RUN yarn
+COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm --force
 COPY . .
-RUN yarn build
-CMD ["yarn", "start"]
-
+RUN pnpm install
+RUN pnpm nx run client:build
+RUN pnpx prisma generate
+CMD ["sh", "-c", "pnpm nx run client:start"]

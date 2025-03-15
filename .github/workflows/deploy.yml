@@ -1,42 +1,67 @@
-name: deploy
+name: Deploy to Cloud Run
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch:
 jobs:
-  aws-deploy:
-    name: Deploy to AWS
+  deploy-backend:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        app-name: ["leads-tracker"]
-        deploy-group: ["personal-ec2-deployment-group"]
-        s3-bucket: ["personal-ec2-deployment-s3"]
-        s3-filename: ["leads-tracker-aws-codedeploy-${{ github.sha }}"]
-        region: ["ap-south-1"]
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Set up Google Cloud Auth
+        uses: "google-github-actions/auth@v2"
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
-          aws-region: ${{ matrix.region }}
-
-      - name: Push to s3
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+      - name: Set up Env
         run: |
-          aws deploy push \
-          --application-name ${{ matrix.app-name }} \
-          --description "This is a revision for the ${{ matrix.app-name }}-${{ github.sha }}" \
-          --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
-          --source .
-
-      - name: AWS Create Deployment using Codedeploy
+          echo "${{ secrets.ENV_BE }}" >> apps/backend/.env
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      - name: Configure Docker
         run: |
-          aws deploy create-deployment \
-           --application-name ${{ matrix.app-name }} \
-           --deployment-config-name CodeDeployDefault.OneAtATime \
-           --deployment-group-name ${{ matrix.deploy-group }} \
-           --file-exists-behavior OVERWRITE \
-           --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \
+          gcloud auth configure-docker
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }}:latest -f apps/backend/Dockerfile .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }}:latest
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ vars.BE_CLOUD_RUN_SERVICE_NAME }} \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }}:latest \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Google Cloud Auth
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+      - name: Set up Env
+        run: |
+          echo "${{ secrets.ENV_FE }}" >> apps/client/.env
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.FE_DOCKER_IMAGE_NAME }}:latest -f apps/client/Dockerfile .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.FE_DOCKER_IMAGE_NAME }}:latest
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ vars.FE_CLOUD_RUN_SERVICE_NAME }} \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.FE_DOCKER_IMAGE_NAME }}:latest \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated
