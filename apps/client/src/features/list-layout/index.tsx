@@ -17,55 +17,14 @@ import { icons } from "@/config";
 import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
 import { usePathname, useRouter } from "next/navigation";
-import { Avatar, Box, Stack, Typography } from "@mui/material";
-import { SvgIconComponent } from "@mui/icons-material";
+import { Stack, Typography } from "@mui/material";
 import NoDataCard from "../no-data-card";
 import Spinner from "../spinner";
 import LoadingButton from "../loading-button";
+import AppBodyLayout, { AppBodyLayoutProps } from "../app-body-layout";
 
-interface ListProps {
-  title: string;
-  icon: SvgIconComponent;
-  children?: React.ReactNode;
-  headerComponent?: React.ReactNode;
-}
-
-export default function Listing({
-  title,
-  children,
-  headerComponent,
-  icon: Icon,
-}: ListProps) {
-  return (
-    <>
-      <Stack
-        sx={{ borderBottom: 1, borderColor: "divider" }}
-        direction="row"
-        gap={2}
-        my={1}
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Stack direction="row" gap={2} alignItems="center">
-          <Avatar
-            sx={{
-              m: 0.5,
-              bgcolor: "secondary.main",
-              width: 24,
-              height: 24,
-            }}
-          >
-            <Icon sx={{ width: 16, height: 16 }} />
-          </Avatar>
-          <Typography component="h1" variant="h6">
-            {title}
-          </Typography>
-        </Stack>
-        {headerComponent}
-      </Stack>
-      <Box>{children}</Box>
-    </>
-  );
+export default function Listing(props: AppBodyLayoutProps) {
+  return <AppBodyLayout {...props} />;
 }
 Listing.Tabs = ListTabs;
 Listing.Body = ListBody;
