@@ -26,7 +26,7 @@ jobs:
           gcloud auth configure-docker
       - name: Clean Artifact Registry
         run: |
-          gcloud artifacts docker images delete gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }} --delete-tags --quiet || true
+          gcloud container images delete gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }} --force-delete-tags --quiet || true
       - name: Build and Push Docker Image
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }}:latest -f apps/backend/Dockerfile .
@@ -60,7 +60,7 @@ jobs:
           gcloud auth configure-docker
       - name: Clean Artifact Registry
         run: |
-          gcloud artifacts docker images delete gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.BE_DOCKER_IMAGE_NAME }} --delete-tags --quiet || true
+          gcloud container images delete gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.FE_DOCKER_IMAGE_NAME }} --force-delete-tags --quiet || true
       - name: Build and Push Docker Image
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ vars.FE_DOCKER_IMAGE_NAME }}:latest -f apps/client/Dockerfile .
