@@ -1,7 +1,7 @@
 "use client";
 import DeleteReport from "@/features/delete-report";
 import EditReport from "@/features/edit-report";
-import ListLayout from "@/features/list-layout";
+import Listing from "@/features/list-layout";
 import ReportCard from "@/features/report-card";
 import ViewReport from "@/features/view-report";
 import { useGetReports } from "@/services/reports";
@@ -18,12 +18,9 @@ export default function Page() {
   const { results = [] } = getQuery.data || {};
 
   return (
-    <ListLayout.Body
-      loading={getQuery.isFetching}
-      noData={results.length === 0}
-    >
+    <Listing.Body loading={getQuery.isFetching} noData={results.length === 0}>
       {results.map((item) => (
-        <ListLayout.Card
+        <Listing.Card
           key={item.id}
           actions={
             <>
@@ -34,8 +31,8 @@ export default function Page() {
           }
         >
           <ReportCard item={item} />
-        </ListLayout.Card>
+        </Listing.Card>
       ))}
-    </ListLayout.Body>
+    </Listing.Body>
   );
 }

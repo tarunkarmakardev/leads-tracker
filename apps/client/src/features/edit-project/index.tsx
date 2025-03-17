@@ -3,7 +3,7 @@ import { useBoolean } from "ahooks";
 import { usePatchProject } from "@/services/projects";
 import ProjectForm from "../project-form";
 import { ProjectFormValues } from "@/schemas/projects";
-import ListLayout from "../list-layout";
+import Listing from "../list-layout";
 
 interface EditProjectProps {
   item: ProjectItem;
@@ -20,7 +20,7 @@ export default function EditProject({ item }: EditProjectProps) {
     });
   };
   return (
-    <ListLayout.EditButton
+    <Listing.EditButton
       title="Edit Project"
       open={open}
       onOpen={openActions.setTrue}
@@ -30,13 +30,13 @@ export default function EditProject({ item }: EditProjectProps) {
         editValues={item}
         onSubmit={handleSubmit}
         actionsComponent={(f) => (
-          <ListLayout.EditDialogActions
+          <Listing.EditDialogActions
             onCancel={openActions.setFalse}
             loading={patchApi.isPending}
             disabled={!f.isValid}
           />
         )}
       />
-    </ListLayout.EditButton>
+    </Listing.EditButton>
   );
 }

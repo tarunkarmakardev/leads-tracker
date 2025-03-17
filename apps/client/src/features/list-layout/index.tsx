@@ -23,19 +23,19 @@ import NoDataCard from "../no-data-card";
 import Spinner from "../spinner";
 import LoadingButton from "../loading-button";
 
-interface ListLayoutProps {
+interface ListProps {
   title: string;
   icon: SvgIconComponent;
   children?: React.ReactNode;
   headerComponent?: React.ReactNode;
 }
 
-export default function ListLayout({
+export default function Listing({
   title,
   children,
   headerComponent,
   icon: Icon,
-}: ListLayoutProps) {
+}: ListProps) {
   return (
     <>
       <Stack
@@ -67,12 +67,12 @@ export default function ListLayout({
     </>
   );
 }
-ListLayout.Tabs = ListTabs;
-ListLayout.Body = ListBody;
-ListLayout.Card = ListCard;
-ListLayout.EditButton = ListEditButton;
-ListLayout.EditDialogActions = ListEditActions;
-ListLayout.DeleteButton = ListDeleteButton;
+Listing.Tabs = ListTabs;
+Listing.Body = ListBody;
+Listing.Card = ListCard;
+Listing.EditButton = ListEditButton;
+Listing.EditDialogActions = ListEditActions;
+Listing.DeleteButton = ListDeleteButton;
 
 type ListTabsProps = {
   values: {
