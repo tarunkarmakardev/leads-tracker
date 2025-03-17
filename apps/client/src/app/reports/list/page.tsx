@@ -1,6 +1,9 @@
 "use client";
-import ReportsList from "@/features/reports-list";
-import Spinner from "@/features/spinner";
+import DeleteReport from "@/features/delete-report";
+import EditReport from "@/features/edit-report";
+import ListLayout from "@/features/list-layout";
+import ReportCard from "@/features/report-card";
+import ViewReport from "@/features/view-report";
 import { useGetReports } from "@/services/reports";
 import { ReportsGetPayload } from "@leads-tracker/schemas";
 
@@ -13,14 +16,26 @@ const payload: ReportsGetPayload = {
 export default function Page() {
   const getQuery = useGetReports(payload);
   const { results = [] } = getQuery.data || {};
+
   return (
-    <Spinner
+    <ListLayout.Body
       loading={getQuery.isFetching}
-      loaderProps={{
-        sx: { my: 12 },
-      }}
+      noData={results.length === 0}
     >
-      <ReportsList items={results} />
-    </Spinner>
+      {results.map((item) => (
+        <ListLayout.Card
+          key={item.id}
+          actions={
+            <>
+              <EditReport item={item} />
+              <DeleteReport item={item} />
+              <ViewReport item={item} />
+            </>
+          }
+        >
+          <ReportCard item={item} />
+        </ListLayout.Card>
+      ))}
+    </ListLayout.Body>
   );
 }

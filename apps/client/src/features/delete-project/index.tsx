@@ -1,17 +1,18 @@
-import { useDeleteReport } from "@/services/reports";
-import { ReportItem } from "@leads-tracker/schemas";
+import { ProjectItem } from "@leads-tracker/schemas";
 import { useBoolean } from "ahooks";
+import { useDeleteProject } from "@/services/projects";
 import ListLayout from "../list-layout";
 
-interface DeleteReportProps {
-  item: ReportItem;
+interface DeleteProjectProps {
+  item: ProjectItem;
   onSuccess?: () => void;
 }
 
-export default function DeleteReport({ item, onSuccess }: DeleteReportProps) {
+export default function DeleteProject({ item, onSuccess }: DeleteProjectProps) {
   const [open, openActions] = useBoolean();
-  const deleteApi = useDeleteReport(item.id);
+  const deleteApi = useDeleteProject(item.id);
   const handleConfirm = () => deleteApi.mutate(undefined, { onSuccess });
+
   return (
     <ListLayout.DeleteButton
       open={open}
@@ -19,7 +20,7 @@ export default function DeleteReport({ item, onSuccess }: DeleteReportProps) {
       onConfirm={handleConfirm}
       loading={deleteApi.isPending}
       onOpen={openActions.setTrue}
-      itemName={"Report"}
+      itemName={item.name}
     />
   );
 }

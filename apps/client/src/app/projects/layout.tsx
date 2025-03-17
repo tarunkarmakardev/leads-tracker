@@ -8,13 +8,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AppLayout>
       <ListLayout
-        icon={icons.reports}
-        title="Reports"
+        icon={icons.projects}
+        title="Projects"
         headerComponent={
           <ListLayout.Tabs
             values={{
-              LIST: navigationUrls.reports.list,
-              CREATE: navigationUrls.reports.create,
+              LIST: navigationUrls.projects.list,
+              CREATE: navigationUrls.projects.create,
             }}
           />
         }

@@ -14,7 +14,7 @@ import { useGlobalStore } from "../global-store/context";
 import { useLocalStorageState } from "ahooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProjectItem } from "@leads-tracker/schemas";
-import { localStorageKeys } from "@/config/common";
+import { localStorageKeys } from "@/config";
 import { useMemo } from "react";
 import { useGetProjects } from "@/services/projects";
 

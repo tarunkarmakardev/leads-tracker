@@ -2,7 +2,7 @@
 import { Box, Container, Stack } from "@mui/material";
 import Navbar from "@/features/nav-bar/Navbar";
 import TopBar from "@/features/top-bar";
-import { BODY_HEIGHT } from "@/config/common";
+import { BODY_HEIGHT } from "@/config";
 
 export default function AppLayout({
   children,

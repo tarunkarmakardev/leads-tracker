@@ -1,25 +1,24 @@
-import ReportsForm from "@/features/reports-form";
-import { ReportItem } from "@leads-tracker/schemas";
-import { ReportFormValues } from "@/schemas/reports";
+import { ProjectItem } from "@leads-tracker/schemas";
 import { useBoolean } from "ahooks";
-import { usePatchReport } from "@/services/reports";
+import { usePatchProject } from "@/services/projects";
+import ProjectForm from "../project-form";
+import { ProjectFormValues } from "@/schemas/projects";
 import ListLayout from "../list-layout";
 
-interface EditReportProps {
-  item: ReportItem;
+interface EditProjectProps {
+  item: ProjectItem;
 }
 
-export default function EditReport({ item }: EditReportProps) {
+export default function EditProject({ item }: EditProjectProps) {
   const [open, openActions] = useBoolean(false);
-  const patchApi = usePatchReport(item.id);
-  const handleSubmit = (values: ReportFormValues) => {
+  const patchApi = usePatchProject(item.id);
+  const handleSubmit = (values: ProjectFormValues) => {
     patchApi.mutate(values, {
       onSuccess: () => {
         openActions.setFalse();
       },
     });
   };
-
   return (
     <ListLayout.EditButton
       title="Edit Project"
@@ -27,7 +26,7 @@ export default function EditReport({ item }: EditReportProps) {
       onOpen={openActions.setTrue}
       onClose={openActions.setFalse}
     >
-      <ReportsForm
+      <ProjectForm
         editValues={item}
         onSubmit={handleSubmit}
         actionsComponent={(f) => (

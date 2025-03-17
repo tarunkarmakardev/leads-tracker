@@ -28,6 +28,7 @@ export const endpoints = {
   },
   projects: {
     list: beProxyUrl("/projects"),
+    post: beProxyUrl("/projects"),
     detail: (id: string) => beProxyUrl(`/projects/${id}`),
     patch: (id: string) => beProxyUrl(`/projects/${id}`),
     delete: (id: string) => beProxyUrl(`/projects/${id}`),
