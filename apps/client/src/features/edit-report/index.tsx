@@ -1,17 +1,9 @@
 import ReportsForm from "@/features/reports-form";
-import LoadingButton from "@/features/loading-button";
-import EditIcon from "@mui/icons-material/Edit";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
 import { ReportItem } from "@leads-tracker/schemas";
 import { ReportFormValues } from "@/schemas/reports";
 import { useBoolean } from "ahooks";
 import { usePatchReport } from "@/services/reports";
+import ListLayout from "../list-layout";
 
 interface EditReportProps {
   item: ReportItem;
@@ -20,7 +12,6 @@ interface EditReportProps {
 export default function EditReport({ item }: EditReportProps) {
   const [open, openActions] = useBoolean(false);
   const patchApi = usePatchReport(item.id);
-
   const handleSubmit = (values: ReportFormValues) => {
     patchApi.mutate(values, {
       onSuccess: () => {
@@ -28,40 +19,25 @@ export default function EditReport({ item }: EditReportProps) {
       },
     });
   };
+
   return (
-    <>
-      <EditIcon
-        color="info"
-        onClick={openActions.setTrue}
-        sx={{ cursor: "pointer" }}
-      />
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={open}
-        onClose={openActions.setFalse}
-      >
-        <DialogTitle>Edit Call Stat</DialogTitle>
-        <DialogContent>
-          <ReportsForm
-            editValues={item}
-            onSubmit={handleSubmit}
-            actionsComponent={(f) => (
-              <DialogActions>
-                <Button onClick={openActions.setFalse}>Cancel</Button>
-                <LoadingButton
-                  type="submit"
-                  loading={patchApi.isPending}
-                  disabled={!f.isValid}
-                  variant="contained"
-                >
-                  Update
-                </LoadingButton>
-              </DialogActions>
-            )}
+    <ListLayout.EditButton
+      title="Edit Project"
+      open={open}
+      onOpen={openActions.setTrue}
+      onClose={openActions.setFalse}
+    >
+      <ReportsForm
+        editValues={item}
+        onSubmit={handleSubmit}
+        actionsComponent={(f) => (
+          <ListLayout.EditDialogActions
+            onCancel={openActions.setFalse}
+            loading={patchApi.isPending}
+            disabled={!f.isValid}
           />
-        </DialogContent>
-      </Dialog>
-    </>
+        )}
+      />
+    </ListLayout.EditButton>
   );
 }

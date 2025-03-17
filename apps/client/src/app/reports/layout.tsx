@@ -1,13 +1,26 @@
+"use client";
+import { icons } from "@/config";
+import { navigationUrls } from "@/config/urls";
 import AppLayout from "@/features/app-layout";
-import ReportsLayout from "@/features/reports-layout";
-import ReportsTabs from "@/features/reports-tabs";
+import ListLayout from "@/features/list-layout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AppLayout>
-      <ReportsLayout title="Reports" headerComponent={<ReportsTabs />}>
+      <ListLayout
+        icon={icons.reports}
+        title="Reports"
+        headerComponent={
+          <ListLayout.Tabs
+            values={{
+              LIST: navigationUrls.reports.list,
+              CREATE: navigationUrls.reports.create,
+            }}
+          />
+        }
+      >
         {children}
-      </ReportsLayout>
+      </ListLayout>
     </AppLayout>
   );
 }

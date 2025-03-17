@@ -11,11 +11,10 @@ import {
   Drawer,
 } from "@mui/material";
 import Link from "next/link";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import TimelineIcon from "@mui/icons-material/Timeline";
 import { usePathname } from "next/navigation";
 import { useGlobalStore } from "../global-store/context";
 import { navigationUrls } from "@/config/urls";
+import { icons } from "@/config";
 
 function NavContainer({ children }: React.PropsWithChildren) {
   const isNavOpen = useGlobalStore((s) => s.navbarOpen);
@@ -99,12 +98,17 @@ export default function Navbar() {
       <NavLink
         href={navigationUrls.dashboard}
         text="Dashboard"
-        icon={DashboardIcon}
+        icon={icons.dashboard}
+      />
+      <NavLink
+        href={navigationUrls.projects.list}
+        text="Projects"
+        icon={icons.projects}
       />
       <NavLink
         href={navigationUrls.reports.list}
         text="Reports"
-        icon={TimelineIcon}
+        icon={icons.reports}
       />
     </NavContainer>
   );

@@ -1,16 +1,7 @@
 import { useDeleteReport } from "@/services/reports";
 import { ReportItem } from "@leads-tracker/schemas";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
 import { useBoolean } from "ahooks";
-import LoadingButton from "../loading-button";
+import ListLayout from "../list-layout";
 
 interface DeleteReportProps {
   item: ReportItem;
@@ -20,36 +11,15 @@ interface DeleteReportProps {
 export default function DeleteReport({ item, onSuccess }: DeleteReportProps) {
   const [open, openActions] = useBoolean();
   const deleteApi = useDeleteReport(item.id);
-  const handleClick = () => deleteApi.mutate(undefined, { onSuccess });
+  const handleConfirm = () => deleteApi.mutate(undefined, { onSuccess });
   return (
-    <>
-      <DeleteIcon
-        sx={{ cursor: "pointer" }}
-        color="info"
-        onClick={openActions.setTrue}
-      />
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={open}
-        onClose={openActions.setFalse}
-      >
-        <DialogTitle>Edit Call Stat</DialogTitle>
-        <DialogContent>
-          <Typography>Are you sure you want to delete? </Typography>
-          <DialogActions>
-            <Button onClick={openActions.setFalse}>Cancel</Button>
-            <LoadingButton
-              loading={deleteApi.isPending}
-              variant="contained"
-              color="error"
-              onClick={handleClick}
-            >
-              Delete
-            </LoadingButton>
-          </DialogActions>
-        </DialogContent>
-      </Dialog>
-    </>
+    <ListLayout.DeleteButton
+      open={open}
+      onClose={openActions.setFalse}
+      onConfirm={handleConfirm}
+      loading={deleteApi.isPending}
+      onOpen={openActions.setTrue}
+      itemName={"Report"}
+    />
   );
 }

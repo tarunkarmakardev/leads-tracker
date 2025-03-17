@@ -1,5 +1,5 @@
 import Link from "next/link";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { icons } from "@/config";
 import { ReportItem } from "@leads-tracker/schemas";
 import { navigationUrls } from "@/config/urls";
 
@@ -10,7 +10,7 @@ interface ViewReportProps {
 export default function ViewReport({ item }: ViewReportProps) {
   return (
     <Link href={navigationUrls.reports.detail(item.id)}>
-      <VisibilityIcon color="info" />
+      <icons.view color="info" />
     </Link>
   );
 }
