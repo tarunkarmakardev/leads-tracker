@@ -3,7 +3,7 @@ import { ReportItem } from "@leads-tracker/schemas";
 import { ReportFormValues } from "@/schemas/reports";
 import { useBoolean } from "ahooks";
 import { usePatchReport } from "@/services/reports";
-import ListLayout from "../list-layout";
+import Listing from "../list-layout";
 
 interface EditReportProps {
   item: ReportItem;
@@ -21,7 +21,7 @@ export default function EditReport({ item }: EditReportProps) {
   };
 
   return (
-    <ListLayout.EditButton
+    <Listing.EditButton
       title="Edit Project"
       open={open}
       onOpen={openActions.setTrue}
@@ -31,13 +31,13 @@ export default function EditReport({ item }: EditReportProps) {
         editValues={item}
         onSubmit={handleSubmit}
         actionsComponent={(f) => (
-          <ListLayout.EditDialogActions
+          <Listing.EditDialogActions
             onCancel={openActions.setFalse}
             loading={patchApi.isPending}
             disabled={!f.isValid}
           />
         )}
       />
-    </ListLayout.EditButton>
+    </Listing.EditButton>
   );
 }

@@ -1,7 +1,7 @@
 import { ProjectItem } from "@leads-tracker/schemas";
 import { useBoolean } from "ahooks";
 import { useDeleteProject } from "@/services/projects";
-import ListLayout from "../list-layout";
+import Listing from "../list-layout";
 
 interface DeleteProjectProps {
   item: ProjectItem;
@@ -14,7 +14,7 @@ export default function DeleteProject({ item, onSuccess }: DeleteProjectProps) {
   const handleConfirm = () => deleteApi.mutate(undefined, { onSuccess });
 
   return (
-    <ListLayout.DeleteButton
+    <Listing.DeleteButton
       open={open}
       onClose={openActions.setFalse}
       onConfirm={handleConfirm}

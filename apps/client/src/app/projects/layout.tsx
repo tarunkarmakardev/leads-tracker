@@ -2,16 +2,16 @@
 import { icons } from "@/config";
 import { navigationUrls } from "@/config/urls";
 import AppLayout from "@/features/app-layout";
-import ListLayout from "@/features/list-layout";
+import Listing from "@/features/list-layout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AppLayout>
-      <ListLayout
+      <Listing
         icon={icons.projects}
         title="Projects"
         headerComponent={
-          <ListLayout.Tabs
+          <Listing.Tabs
             values={{
               LIST: navigationUrls.projects.list,
               CREATE: navigationUrls.projects.create,
@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }
       >
         {children}
-      </ListLayout>
+      </Listing>
     </AppLayout>
   );
 }
