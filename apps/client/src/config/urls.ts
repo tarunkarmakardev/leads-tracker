@@ -33,6 +33,13 @@ export const endpoints = {
     patch: (id: string) => beProxyUrl(`/projects/${id}`),
     delete: (id: string) => beProxyUrl(`/projects/${id}`),
   },
+  targets: {
+    list: beProxyUrl("/targets"),
+    post: beProxyUrl("/targets"),
+    detail: (id: string) => beProxyUrl(`/targets/${id}`),
+    patch: (id: string) => beProxyUrl(`/targets/${id}`),
+    delete: (id: string) => beProxyUrl(`/targets/${id}`),
+  },
 };
 export const navigationUrls = {
   dashboard: "/dashboard",

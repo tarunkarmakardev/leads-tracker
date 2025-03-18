@@ -21,7 +21,7 @@ export default function AppBodyLayout({
         sx={{ borderBottom: 1, borderColor: "divider" }}
         direction="row"
         gap={2}
-        my={1}
+        my={2}
         justifyContent="space-between"
         alignItems="center"
       >
@@ -42,7 +42,7 @@ export default function AppBodyLayout({
         </Stack>
         {headerComponent}
       </Stack>
-      <Box>{children}</Box>
+      <Box sx={{ pb: 2 }}>{children}</Box>
     </>
   );
 }
