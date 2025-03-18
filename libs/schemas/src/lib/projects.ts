@@ -1,19 +1,23 @@
 import { z } from "zod";
 import { RestControllerPaginationSchema } from "./rest-controller";
+import { TargetCreatePayloadSchema } from "./targets";
 
 export const ProjectSchema = z.object({
   id: z.string(),
   name: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  target: TargetCreatePayloadSchema,
 });
 export const ProjectCreatePayloadSchema = ProjectSchema.pick({
   name: true,
+  target: true,
 });
 export const ProjectCreateDataSchema = ProjectSchema;
 export const ProjectUpdatePayloadSchema = ProjectSchema.pick({
   id: true,
   name: true,
+  target: true,
 });
 export const ProjectUpdateDataSchema = ProjectSchema;
 export const ProjectDeletePayloadSchema = ProjectSchema.pick({
@@ -26,7 +30,7 @@ export const ProjectDetailPayloadSchema = ProjectSchema.pick({
 export const ProjectDetailDataSchema = ProjectSchema;
 export const ProjectsGetPayloadSchema = RestControllerPaginationSchema;
 export const ProjectsGetDataSchema = z.object({
-  results: z.array(ProjectSchema),
+  results: z.array(ProjectSchema.omit({ target: true })),
 });
 
 export type ProjectItem = z.infer<typeof ProjectSchema>;

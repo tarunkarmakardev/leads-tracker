@@ -2,12 +2,14 @@ import { endpoints, navigationUrls } from "@/config/urls";
 import { api } from "@/lib/axios";
 import { ProjectFormValues } from "@/schemas/projects";
 import {
+  ProjectDetailData,
   ProjectDetailDataSchema,
   ProjectsGetDataSchema,
   ProjectsGetPayload,
 } from "@leads-tracker/schemas";
 import {
   queryOptions,
+  UndefinedInitialDataOptions,
   useMutation,
   useQuery,
   useQueryClient,
@@ -67,7 +69,10 @@ export const useDeleteProject = (id: string) => {
   });
 };
 
-export const useDetailProject = (id: string) => {
+export const useDetailProject = (
+  id: string,
+  options?: Partial<UndefinedInitialDataOptions<ProjectDetailData>>
+) => {
   return useQuery({
     queryKey: [endpoints.projects.detail(id)],
     queryFn: async () => {
@@ -75,5 +80,6 @@ export const useDetailProject = (id: string) => {
       const data = ProjectDetailDataSchema.parse(res.data);
       return data;
     },
+    ...options,
   });
 };

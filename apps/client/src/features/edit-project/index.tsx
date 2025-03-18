@@ -1,6 +1,6 @@
 import { ProjectItem } from "@leads-tracker/schemas";
 import { useBoolean } from "ahooks";
-import { usePatchProject } from "@/services/projects";
+import { useDetailProject, usePatchProject } from "@/services/projects";
 import ProjectForm from "../project-form";
 import { ProjectFormValues } from "@/schemas/projects";
 import Listing from "../list-layout";
@@ -11,6 +11,7 @@ interface EditProjectProps {
 
 export default function EditProject({ item }: EditProjectProps) {
   const [open, openActions] = useBoolean(false);
+  const detailQuery = useDetailProject(item.id, { enabled: open });
   const patchApi = usePatchProject(item.id);
   const handleSubmit = (values: ProjectFormValues) => {
     patchApi.mutate(values, {
@@ -18,6 +19,11 @@ export default function EditProject({ item }: EditProjectProps) {
         openActions.setFalse();
       },
     });
+  };
+  const detailData = detailQuery.data;
+  const formValues = detailData && {
+    name: detailData.name,
+    target: detailData.target,
   };
   return (
     <Listing.EditButton
@@ -27,7 +33,7 @@ export default function EditProject({ item }: EditProjectProps) {
       onClose={openActions.setFalse}
     >
       <ProjectForm
-        editValues={item}
+        editValues={formValues}
         onSubmit={handleSubmit}
         actionsComponent={(f) => (
           <Listing.EditDialogActions

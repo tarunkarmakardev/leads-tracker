@@ -7,6 +7,14 @@ import TextInputField from "../text-input-field";
 
 const initialValues: ProjectFormValues = {
   name: "",
+  target: {
+    appointments: 20,
+    callbacks: 100,
+    emails: 20,
+    followups: 20,
+    pitchedCalls: 190,
+    totalCalls: 200,
+  },
 };
 
 type ProjectFormProps = {
@@ -37,6 +45,77 @@ export default function ProjectForm({
                 id: 1,
                 gridItemProps: { xs: 6 },
                 component: <TextInputField name="name" label="Name" />,
+              },
+            ]}
+          />
+          <FormGridSection
+            title="Targets"
+            items={[
+              {
+                id: 1,
+                gridItemProps: { xs: 6 },
+                component: (
+                  <TextInputField
+                    name="target.totalCalls"
+                    label="Total Calls"
+                    type="number"
+                  />
+                ),
+              },
+              {
+                id: 2,
+                gridItemProps: { xs: 6 },
+                component: (
+                  <TextInputField
+                    name="target.pitchedCalls"
+                    label="Pitched Calls"
+                    type="number"
+                  />
+                ),
+              },
+              {
+                id: 3,
+                gridItemProps: { xs: 6 },
+                component: (
+                  <TextInputField
+                    name="target.callbacks"
+                    label="Callbacks"
+                    type="number"
+                  />
+                ),
+              },
+              {
+                id: 4,
+                gridItemProps: { xs: 6 },
+                component: (
+                  <TextInputField
+                    name="target.followups"
+                    label="Followups"
+                    type="number"
+                  />
+                ),
+              },
+              {
+                id: 5,
+                gridItemProps: { xs: 6 },
+                component: (
+                  <TextInputField
+                    name="target.appointments"
+                    label="Appointments"
+                    type="number"
+                  />
+                ),
+              },
+              {
+                id: 6,
+                gridItemProps: { xs: 6 },
+                component: (
+                  <TextInputField
+                    name="target.emails"
+                    label="Emails"
+                    type="number"
+                  />
+                ),
               },
             ]}
           />
