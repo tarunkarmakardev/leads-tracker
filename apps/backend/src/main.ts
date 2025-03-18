@@ -8,6 +8,7 @@ import projectsRouter from "./routers/projects";
 import seedRouter from "./routers/seed";
 import reportsRouter from "./routers/reports";
 import projectMiddleware from "./middleware/project";
+import targetsRouter from "./routers/targets";
 
 const env = getEnv();
 const app: Application = express();
@@ -25,6 +26,7 @@ app.use("/auth", authRouter);
 app.use("/seed", authMiddleware, seedRouter);
 app.use("/projects", authMiddleware, projectsRouter);
 app.use("/reports", authMiddleware, projectMiddleware, reportsRouter);
+app.use("/targets", authMiddleware, projectMiddleware, targetsRouter);
 app.listen(PORT, async () => {
   // eslint-disable-next-line no-console
   console.log(chalk.yellow(`SERVER IS UP ON PORT: ${PORT}`));
