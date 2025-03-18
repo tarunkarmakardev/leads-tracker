@@ -9,6 +9,7 @@ export const ProjectSchema = z.object({
   updatedAt: z.string(),
   target: TargetCreatePayloadSchema,
 });
+export const ProjectListItemSchema = ProjectSchema.omit({ target: true });
 export const ProjectCreatePayloadSchema = ProjectSchema.pick({
   name: true,
   target: true,
@@ -30,10 +31,10 @@ export const ProjectDetailPayloadSchema = ProjectSchema.pick({
 export const ProjectDetailDataSchema = ProjectSchema;
 export const ProjectsGetPayloadSchema = RestControllerPaginationSchema;
 export const ProjectsGetDataSchema = z.object({
-  results: z.array(ProjectSchema.omit({ target: true })),
+  results: z.array(ProjectListItemSchema),
 });
 
-export type ProjectItem = z.infer<typeof ProjectSchema>;
+export type ProjectItem = z.infer<typeof ProjectListItemSchema>;
 export type ProjectsGetPayload = z.infer<typeof ProjectsGetPayloadSchema>;
 export type ProjectsGetData = z.infer<typeof ProjectsGetDataSchema>;
 export type ProjectDetailPayload = z.infer<typeof ProjectDetailPayloadSchema>;
