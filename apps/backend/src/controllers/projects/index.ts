@@ -17,9 +17,11 @@ export const { GET, DELETE, DETAIL, PATCH, POST } = createRestControllers({
   post: {
     parsePayload: (rawPayload) => ProjectCreatePayloadSchema.parse(rawPayload),
     mutation: async (payload) => {
-      const { name, userId, target, projectId } = payload.data;
-      await db().project.create({ data: { name, userId } });
-      await db().target.create({ data: { ...target, userId, projectId } });
+      const { name, userId, target } = payload.data;
+      const project = await db().project.create({ data: { name, userId } });
+      await db().target.create({
+        data: { ...target, userId, projectId: project.id },
+      });
     },
   },
   patch: {

@@ -77,6 +77,6 @@ model Target {
   emails       Int
   user         User    @relation(fields: [userId], references: [id])
   userId       String
-  Project      Project @relation(fields: [projectId], references: [id])
+  Project      Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId    String  @unique
 }
