@@ -4,6 +4,6 @@ COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm --force
 COPY . .
 RUN pnpm install
-RUN cd ./apps/backend && pnpx prisma generate
+RUN cd ./apps/backend && pnpx prisma migrate deploy
 RUN cd ../../
 CMD ["sh", "-c", "pnpm nx run backend:start"]
