@@ -5,7 +5,10 @@ on:
       - main
   workflow_dispatch:
 jobs:
-  deploy-backend:
+  deploy:
+    permissions:
+      contents: "read"
+      id-token: "write"
     runs-on: ubuntu-latest
     env:
       BE_IMAGE_TAG: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.BE_DOCKER_IMAGE_NAME }}:latest
